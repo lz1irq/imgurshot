@@ -12,13 +12,11 @@ upload_timeout="120"
 upload_retries="3"
 
 handle_upload_success() {
-    echo $1
-    echo $2 
+    zenity --info --text "<a href=\"$1\">Imgur link</a>"
 }
 
 handle_upload_error() {
-    echo $1
-    echo $2
+    zenity --error --text "Could not upload screenshot to Imgur: $1"
 }
 
 # Origial by jomo from the imgur-screenshot project 
@@ -41,4 +39,11 @@ upload_anonymous_image() {
 }
 
 gnome-screenshot --area --file=${file_path}
-upload_anonymous_image ${file_path}
+
+zenity --question --title="imgurshot" --text="Do you want to upload this screenshot to imgur?"
+if [ $? -eq 0 ]; then
+    upload_anonymous_image ${file_path}
+fi
+
+
+
