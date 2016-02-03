@@ -8,7 +8,7 @@ file_path=${base_folder}/${file_name}
 imgur_anon_id="9e603f08c0e541c"
 upload_connect_timeout="5"
 upload_timeout="120"
-upload_retries="3"
+upload_retries="5"
 
 handle_upload_success() {
     zenity --info --text "<a href=\"$1\">Imgur link</a>"
@@ -18,7 +18,7 @@ handle_upload_error() {
     zenity --error --text "Could not upload screenshot to Imgur: $1"
 }
 
-# Original by jomo from the imgur-screenshot project 
+# Original by jomo from the imgur-screenshot project (https://github.com/jomo/imgur-screenshot)
 upload_anonymous_image() {
     echo "Uploading '${1}'..."
     title="$(echo "${1}" | rev | cut -d "/" -f 1 | cut -d "." -f 2- | rev)"
