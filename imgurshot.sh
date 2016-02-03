@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 base_folder="${HOME}/pictures/screenshots"
 file_name=$(date "+scr-%Y-%m-%d-%H-%M.png")
 file_path=${base_folder}/${file_name}
@@ -19,7 +18,7 @@ handle_upload_error() {
     zenity --error --text "Could not upload screenshot to Imgur: $1"
 }
 
-# Origial by jomo from the imgur-screenshot project 
+# Original by jomo from the imgur-screenshot project 
 upload_anonymous_image() {
     echo "Uploading '${1}'..."
     title="$(echo "${1}" | rev | cut -d "/" -f 1 | cut -d "." -f 2- | rev)"
@@ -38,12 +37,9 @@ upload_anonymous_image() {
     fi
 }
 
-gnome-screenshot --area --file=${file_path}
-
+gnome-screenshot $1 --file=${file_path}
 zenity --question --title="imgurshot" --text="Do you want to upload this screenshot to imgur?"
 if [ $? -eq 0 ]; then
     upload_anonymous_image ${file_path}
 fi
-
-
 
