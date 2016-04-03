@@ -5,7 +5,7 @@ file_name=$(date "+scr-%Y-%m-%d-%H-%M.png")
 file_path=${base_folder}/${file_name}
 
 # imgur upload settings
-imgur_anon_id="9e603f08c0e541c"
+imgur_anon_id="ea6c0ef2987808e"
 upload_connect_timeout="5"
 upload_timeout="120"
 upload_retries="5"
