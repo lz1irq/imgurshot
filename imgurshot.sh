@@ -3,19 +3,18 @@
 base_folder="${HOME}/pictures/screenshots"
 file_name=$(date "+scr-%Y-%m-%d-%H-%M.png")
 file_path=${base_folder}/${file_name}
+up_user="ivo"
+up_host="trantor.schupen.net"
+up_folder="/home/${up_user}/www/scr"
+public_prefix="https://ivo.schupen.net/scr/"
 
-# imgur upload settings
-imgur_anon_id="ea6c0ef2987808e"
-upload_connect_timeout="5"
-upload_timeout="120"
-upload_retries="5"
 
 handle_upload_success() {
-    zenity --info --text "<a href=\"$1\">Imgur link</a>"
+    zenity --info --text "<a href=\"$1\">Link</a>"
 }
 
 handle_upload_error() {
-    zenity --error --text "Could not upload screenshot to Imgur: $1"
+    zenity --error --text "Could not upload screenshot: $1"
 }
 
 # Original by jomo from the imgur-screenshot project (https://github.com/jomo/imgur-screenshot)
@@ -38,8 +37,13 @@ upload_anonymous_image() {
 }
 
 gnome-screenshot $1 --file=${file_path}
-zenity --question --title="imgurshot" --text="Do you want to upload this screenshot to imgur?"
+zenity --question --title="imgurshot" --text="Do you want to upload this screenshot?"
 if [ $? -eq 0 ]; then
-    upload_anonymous_image ${file_path}
+    scp ${file_path} ${up_user}@${up_host}:${up_folder}
+    if [ $? -eq 0 ]; then
+        handle_upload_success ${public_prefix}/`basename ${file_path}`
+    else
+        handle_upload_error 
+    fi
 fi
 
