@@ -4,10 +4,11 @@ base_folder="${HOME}/pictures/screenshots"
 file_name=$(date "+scr-%Y-%m-%d-%H-%M.png")
 file_path=${base_folder}/${file_name}
 up_user="ivo"
-up_host="trantor.schupen.net"
+up_host="schupen.net"
 up_folder="/home/${up_user}/www/scr"
-public_prefix="https://ivo.schupen.net/scr/"
+public_prefix="https://ivo.schupen.net/scr"
 
+source ${HOME}/.ssh/environment
 
 handle_upload_success() {
     zenity --info --text "<a href=\"$1\">Link</a>"
@@ -36,10 +37,12 @@ upload_anonymous_image() {
     fi
 }
 
+echo "CHORAAAP: ${SSH_AUTH_SOCk}"
 gnome-screenshot $1 --file=${file_path}
 zenity --question --title="imgurshot" --text="Do you want to upload this screenshot?"
 if [ $? -eq 0 ]; then
-    scp ${file_path} ${up_user}@${up_host}:${up_folder}
+    echo 'uploading...'
+    scp -v ${file_path} ${up_user}@${up_host}:${up_folder}
     if [ $? -eq 0 ]; then
         handle_upload_success ${public_prefix}/`basename ${file_path}`
     else
